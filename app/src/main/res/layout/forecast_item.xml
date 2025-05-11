@@ -14,6 +14,7 @@
         android:id="@+id/forecastItemIcon"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:contentDescription="@string/weathericon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/forecastItemTemperature"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +31,6 @@
         app:layout_constraintBottom_toTopOf="@id/forecastItemName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="ELEment"
         app:layout_constraintHeight_percent="0.2"/>
     <TextView
         android:id="@+id/forecastItemName"
@@ -40,6 +40,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="ELEment"
         app:layout_constraintHeight_percent="0.2"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
