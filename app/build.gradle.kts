@@ -3,9 +3,15 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
+val weatherApiKey = project.findProperty("WEATHER_API_KEY") as? String ?: ""
+
 android {
     namespace = "com.example.weatherapp"
     compileSdk = 35
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId = "com.example.weatherapp"
@@ -15,6 +21,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "WEATHER_API_KEY", "\"$weatherApiKey\"")
     }
 
     buildTypes {
