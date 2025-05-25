@@ -9,7 +9,7 @@
         android:id="@+id/moreInfolabel"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:text="Informacje:"
+        android:text="@string/Info_label"
         android:textSize="30sp"
         android:gravity="center|start"
         app:layout_constraintWidth_percent="0.9"
@@ -46,8 +46,7 @@
             <TextView
                 android:id="@+id/longitudeVal"
                 app:layout_constraintStart_toEndOf="@id/longitudeIcon"
-                style="@style/moreInfoItemValue"
-                android:text="21.017532"/>
+                style="@style/moreInfoItemValue"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,14 +57,13 @@
             <ImageView
                 android:id="@+id/latitudeIcon"
                 android:src="@drawable/latitude"
-                android:contentDescription="Latitude"
+                android:contentDescription="@string/latitude"
                 style="@style/moreInfoItemImage"
                 />
             <TextView
                 android:id="@+id/latitudeVal"
                 app:layout_constraintStart_toEndOf="@id/latitudeIcon"
-                style="@style/moreInfoItemValue"
-                android:text="52.237049"/>
+                style="@style/moreInfoItemValue"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -75,15 +73,14 @@
             >
             <ImageView
                 android:id="@+id/pressureIcon"
-                android:contentDescription="Pressure"
+                android:contentDescription="@string/pressure"
                 android:src="@drawable/pressure"
                 style="@style/moreInfoItemImage"
                 />
             <TextView
                 android:id="@+id/pressureVal"
                 app:layout_constraintStart_toEndOf="@id/pressureIcon"
-                style="@style/moreInfoItemValue"
-                android:text="1025 hPa"/>
+                style="@style/moreInfoItemValue"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,16 +89,15 @@
             style="@style/moreInfoConstrainLayout"
             >
             <ImageView
-                android:id="@+id/rainProbIcon"
+                android:id="@+id/rainIcon"
                 android:src="@drawable/rain_prob"
-                android:contentDescription="Rain probability"
+                android:contentDescription="@string/rain"
                 style="@style/moreInfoItemImage"
                 />
             <TextView
-                android:id="@+id/rainProbVal"
-                app:layout_constraintStart_toEndOf="@id/rainProbIcon"
-                style="@style/moreInfoItemValue"
-                android:text="50%"/>
+                android:id="@+id/rainVal"
+                app:layout_constraintStart_toEndOf="@id/rainIcon"
+                style="@style/moreInfoItemValue"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,14 +108,13 @@
             <ImageView
                 android:id="@+id/visibilityIcon"
                 android:src="@drawable/visibility"
-                android:contentDescription="Visibility"
+                android:contentDescription="@string/visibility"
                 style="@style/moreInfoItemImage"
                 />
             <TextView
                 android:id="@+id/visibilityVal"
                 app:layout_constraintStart_toEndOf="@id/visibilityIcon"
-                style="@style/moreInfoItemValue"
-                android:text="10000 m"/>
+                style="@style/moreInfoItemValue"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -128,16 +123,15 @@
             style="@style/moreInfoConstrainLayout"
             >
             <ImageView
-                android:id="@+id/wetIcon"
-                android:contentDescription="Wet"
-                android:src="@drawable/wet"
+                android:id="@+id/humidityIcon"
+                android:contentDescription="@string/humidity"
+                android:src="@drawable/humidity"
                 style="@style/moreInfoItemImage"
                 />
             <TextView
-                android:id="@+id/wetVal"
+                android:id="@+id/humidityVal"
                 style="@style/moreInfoItemValue"
-                app:layout_constraintStart_toEndOf="@id/wetIcon"
-                android:text="20%"/>
+                app:layout_constraintStart_toEndOf="@id/humidityIcon"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -147,15 +141,31 @@
             >
             <ImageView
                 android:id="@+id/windIcon"
-                android:contentDescription="Wind speed"
+                android:contentDescription="@string/wind_speed"
                 android:src="@drawable/wind"
                 style="@style/moreInfoItemImage"
                 />
             <TextView
                 android:id="@+id/windVal"
                 app:layout_constraintStart_toEndOf="@id/windIcon"
-                style="@style/moreInfoItemValue"
-                android:text=" 50 km/h"/>
+                style="@style/moreInfoItemValue"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_row="3"
+            android:layout_column="1"
+            style="@style/moreInfoConstrainLayout"
+            >
+            <ImageView
+                android:id="@+id/windDirectionIcon"
+                android:contentDescription="@string/wind_direction"
+                android:src="@drawable/wind_direction"
+                style="@style/moreInfoItemImage"
+                />
+            <TextView
+                android:id="@+id/windDirectionVal"
+                app:layout_constraintStart_toEndOf="@id/windDirectionIcon"
+                style="@style/moreInfoItemValue"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -164,7 +174,7 @@
         android:id="@+id/forecastLabel"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:text="Prognoza:"
+        android:text="@string/forecast_label"
         android:layout_marginTop="20dp"
         android:textSize="30sp"
         android:gravity="center|start"

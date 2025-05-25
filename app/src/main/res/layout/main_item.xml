@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="400dp"
     android:background="@color/mainItemBg"
@@ -32,7 +33,6 @@
         app:layout_constraintWidth_percent="0.9"
         android:layout_marginStart="20dp"
         android:textSize="30sp"
-        android:text="Bełchatów"
         android:gravity="start"
         android:textColor="@color/mainItemText"
         />
@@ -46,7 +46,6 @@
         app:layout_constraintHeight_percent="0.2"
         app:layout_constraintWidth_percent="0.3"
         android:layout_marginStart="20dp"
-        android:text="01.01.2002"
         android:textSize="15sp"
         android:gravity="start"
         android:textColor="@color/mainItemText"
@@ -60,25 +59,8 @@
         app:layout_constraintStart_toEndOf="@id/date"
         app:layout_constraintHeight_percent="0.2"
         app:layout_constraintWidth_percent="0.3"
-        android:text="15:00"
         android:textSize="15sp"
         android:gravity="start"
-        android:textColor="@color/mainItemText"
-        />
-
-    <TextView
-        android:id="@+id/temperature"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.2"
-        app:layout_constraintWidth_percent="0.4"
-        android:layout_marginEnd="10dp"
-        android:text="27°C"
-        android:textSize="50sp"
-        android:gravity="right|bottom"
-        android:paddingBottom="10dp"
         android:textColor="@color/mainItemText"
         />
 
@@ -95,5 +77,20 @@
         app:layout_constraintWidth_percent="0.8"
         android:scaleType="centerInside"
         />
+
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintWidth_percent="0.4"
+        android:layout_marginEnd="10dp"
+        android:textSize="50sp"
+        android:gravity="right|bottom"
+        android:paddingBottom="10dp"
+        android:textColor="@color/mainItemText"
+        tools:ignore="RtlHardcoded" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,4 +6,13 @@
     <string name="settingsButtonDescription">Ustawienia</string>
     <string name="longitude">Longitude</string>
     <string name="refresh">refresh-data</string>
+    <string name="latitude">Latitude</string>
+    <string name="pressure">Pressure</string>
+    <string name="rain">Rain</string>
+    <string name="visibility">Visibility</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="wind_direction">Wind direction</string>
+    <string name="Info_label">Informacje:</string>
+    <string name="forecast_label">Prognoza:</string>
 </resources>
