@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/moreInfolabel"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:text="Informacje:"
+        android:textSize="30sp"
+        android:gravity="center|start"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <GridLayout
+        android:id="@+id/moreInfo"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintWidth_percent="0.97"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/moreInfolabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/forecastLabel"
+        android:columnCount="2"
+        android:rowCount="4"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_row="0"
+            android:layout_column="0"
+            style="@style/moreInfoConstrainLayout"
+            >
+            <ImageView
+                android:id="@+id/longitudeIcon"
+                android:contentDescription="@string/longitude"
+                android:src="@drawable/longitude"
+                style="@style/moreInfoItemImage"
+                />
+            <TextView
+                android:id="@+id/longitudeVal"
+                app:layout_constraintStart_toEndOf="@id/longitudeIcon"
+                style="@style/moreInfoItemValue"
+                android:text="21.017532"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_row="0"
+            android:layout_column="1"
+            style="@style/moreInfoConstrainLayout"
+            >
+            <ImageView
+                android:id="@+id/latitudeIcon"
+                android:src="@drawable/latitude"
+                android:contentDescription="Latitude"
+                style="@style/moreInfoItemImage"
+                />
+            <TextView
+                android:id="@+id/latitudeVal"
+                app:layout_constraintStart_toEndOf="@id/latitudeIcon"
+                style="@style/moreInfoItemValue"
+                android:text="52.237049"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_row="1"
+            android:layout_column="0"
+            style="@style/moreInfoConstrainLayout"
+            >
+            <ImageView
+                android:id="@+id/pressureIcon"
+                android:contentDescription="Pressure"
+                android:src="@drawable/pressure"
+                style="@style/moreInfoItemImage"
+                />
+            <TextView
+                android:id="@+id/pressureVal"
+                app:layout_constraintStart_toEndOf="@id/pressureIcon"
+                style="@style/moreInfoItemValue"
+                android:text="1025 hPa"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_column="1"
+            android:layout_row="1"
+            style="@style/moreInfoConstrainLayout"
+            >
+            <ImageView
+                android:id="@+id/rainProbIcon"
+                android:src="@drawable/rain_prob"
+                android:contentDescription="Rain probability"
+                style="@style/moreInfoItemImage"
+                />
+            <TextView
+                android:id="@+id/rainProbVal"
+                app:layout_constraintStart_toEndOf="@id/rainProbIcon"
+                style="@style/moreInfoItemValue"
+                android:text="50%"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_row="2"
+            android:layout_column="0"
+            style="@style/moreInfoConstrainLayout"
+            >
+            <ImageView
+                android:id="@+id/visibilityIcon"
+                android:src="@drawable/visibility"
+                android:contentDescription="Visibility"
+                style="@style/moreInfoItemImage"
+                />
+            <TextView
+                android:id="@+id/visibilityVal"
+                app:layout_constraintStart_toEndOf="@id/visibilityIcon"
+                style="@style/moreInfoItemValue"
+                android:text="10000 m"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_column="1"
+            android:layout_row="2"
+            style="@style/moreInfoConstrainLayout"
+            >
+            <ImageView
+                android:id="@+id/wetIcon"
+                android:contentDescription="Wet"
+                android:src="@drawable/wet"
+                style="@style/moreInfoItemImage"
+                />
+            <TextView
+                android:id="@+id/wetVal"
+                style="@style/moreInfoItemValue"
+                app:layout_constraintStart_toEndOf="@id/wetIcon"
+                android:text="20%"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_row="3"
+            android:layout_column="0"
+            style="@style/moreInfoConstrainLayout"
+            >
+            <ImageView
+                android:id="@+id/windIcon"
+                android:contentDescription="Wind speed"
+                android:src="@drawable/wind"
+                style="@style/moreInfoItemImage"
+                />
+            <TextView
+                android:id="@+id/windVal"
+                app:layout_constraintStart_toEndOf="@id/windIcon"
+                style="@style/moreInfoItemValue"
+                android:text=" 50 km/h"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </GridLayout>
+    <TextView
+        android:id="@+id/forecastLabel"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:text="Prognoza:"
+        android:layout_marginTop="20dp"
+        android:textSize="30sp"
+        android:gravity="center|start"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/moreInfo"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

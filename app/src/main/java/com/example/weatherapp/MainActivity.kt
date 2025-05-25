@@ -24,14 +24,15 @@ class MainActivity : AppCompatActivity() {
         else {
             val forecast: MutableList<FutureWeatherForecastItem> =
                 futureWeatherForecast.getForecast()
-
             setFutureForecast(forecast)
+            Log.d("XD4", forecast.size.toString())
         }
     }
 
     @SuppressLint("SetTextI18n")
     fun setFutureForecast(forecast: MutableList<FutureWeatherForecastItem>) {
         for (i in forecast) {
+            Log.d("XD3" , "x")
             val itemView =
                 layoutInflater.inflate(R.layout.forecast_item, forecastContainer, false)
             itemView.findViewById<TextView>(R.id.forecastItemName).text = "${i.getName()}:00"

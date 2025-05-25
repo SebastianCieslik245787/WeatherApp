@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="weathericon">weatherIcon</string>
+    <string name="forecastButtonDescription">Prognoza pogody</string>
+    <string name="searchButtonDescription">Wyszukaj miejscowość</string>
+    <string name="settingsButtonDescription">Ustawienia</string>
+    <string name="longitude">Longitude</string>
+    <string name="refresh">refresh-data</string>
 </resources>

@@ -7,22 +7,71 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <HorizontalScrollView
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottomMenu"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.92"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/main_item" />
+
+            <include layout="@layout/more_info"/>
+
+            <HorizontalScrollView
+                android:id="@+id/forecastContainerScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/forecastContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
+
+    <GridLayout
+        android:id="@+id/bottomMenu"
+        android:background="@color/mainItemBg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="20dp"
+        android:columnCount="3"
+        android:rowCount="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.2"
-        app:layout_constraintWidth_percent="0.95">
+        app:layout_constraintHeight_percent="0.08">
 
-        <LinearLayout
-            android:id="@+id/forecastContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" />
-    </HorizontalScrollView>
+        <ImageButton
+            android:id="@+id/buttonForecast"
+            style="@style/bottomMenuButton"
+            android:src="@drawable/forecast"
+            android:contentDescription="@string/forecastButtonDescription" />
+
+        <ImageButton
+            android:id="@+id/buttonSearch"
+            style="@style/bottomMenuButton"
+            android:src="@drawable/search"
+            android:contentDescription="@string/searchButtonDescription" />
+
+        <ImageButton
+            android:id="@+id/buttonSettings"
+            style="@style/bottomMenuButton"
+            android:src="@drawable/settings"
+            android:contentDescription="@string/settingsButtonDescription" />
+    </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

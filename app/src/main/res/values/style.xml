@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="bottomMenuButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_columnWeight">1</item>
+    </style>
+    <style name="moreInfoConstrainLayout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_rowWeight">1</item>
+    </style>
+    <style name="moreInfoItemImage">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="layout_constraintWidth_percent">0.2</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+    </style>
+    <style name="moreInfoItemValue">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="layout_constraintWidth_percent">0.8</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="paddingStart">10dp</item>
+        <item name="android:gravity">center|start</item>
+    </style>
+</resources>
