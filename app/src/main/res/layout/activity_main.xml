@@ -7,40 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomMenu"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.92"
-        android:fillViewport="true">
+        app:layout_constraintHeight_percent="0.92">
+    </FrameLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/main_item" />
-
-            <include layout="@layout/more_info"/>
-
-            <HorizontalScrollView
-                android:id="@+id/forecastContainerScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="20dp"
-                android:fillViewport="true">
-
-                <LinearLayout
-                    android:id="@+id/forecastContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
-        </LinearLayout>
-    </ScrollView>
+    <ProgressBar
+        android:id="@+id/loadingSpinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:indeterminate="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.3"
+        app:layout_constraintHeight_percent="0.3"
+        />
 
     <GridLayout
         android:id="@+id/bottomMenu"
@@ -62,7 +52,7 @@
             android:contentDescription="@string/forecastButtonDescription" />
 
         <ImageButton
-            android:id="@+id/buttonSearch"
+            android:id="@+id/buttonFind"
             style="@style/bottomMenuButton"
             android:src="@drawable/search"
             android:contentDescription="@string/searchButtonDescription" />

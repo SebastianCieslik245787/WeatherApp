@@ -15,4 +15,12 @@
     <string name="wind_direction">Wind direction</string>
     <string name="Info_label">Informacje:</string>
     <string name="forecast_label">Prognoza:</string>
+    <string name="settingsLabel">Settings</string>
+    <string name="select_unit_label">Select Unit:</string>
+    <string name="empty_data">No Data to show</string>
+    <string-array name="units_array">
+        <item>Standard</item>
+        <item>Imperial</item>
+        <item>Metric</item>
+    </string-array>
 </resources>

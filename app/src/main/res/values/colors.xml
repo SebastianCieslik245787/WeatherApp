@@ -5,4 +5,5 @@
     <color name="mainItemText">#E6F0F0F0</color>
     <color name="forecastItemBg">#FFFFFF</color>
     <color name="menuBg">#E2E2E2</color>
+    <color name="noDataText">#B9B9B9</color>
 </resources>
