@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/findCityLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_marginTop="20dp"
+        android:textSize="25sp"
+        android:text="@string/find_city_label"
+        />
+
+    <AutoCompleteTextView
+        android:id="@+id/findCity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/input_city_name_placeholder"
+        android:inputType="text"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintTop_toBottomOf="@id/findCityLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/rounded_background"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:paddingEnd="50dp"
+        android:elevation="2dp"
+        android:textSize="20sp"
+        tools:ignore="RtlSymmetry" />
+
+    <ImageButton
+        android:id="@+id/findCityButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/find_city"
+        app:layout_constraintTop_toTopOf="@id/findCity"
+        app:layout_constraintEnd_toEndOf="@id/findCity"
+        app:layout_constraintWidth_percent="0.1"
+        android:scaleType="centerInside"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/search"
+        android:padding="5dp"
+        android:elevation="3dp"
+        android:background="@color/transparent"
+        />
+
+    <TextView
+        android:id="@+id/activeCityLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/findCity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_marginTop="20dp"
+        android:textSize="25sp"
+        android:text="@string/actual_city_label"
+        />
+
+    <LinearLayout
+        android:id="@+id/actualCity"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:orientation="horizontal"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintTop_toBottomOf="@id/activeCityLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:id="@+id/favouriteLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/actualCity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_marginTop="20dp"
+        android:textSize="25sp"
+        android:text="@string/favourite_label"
+        />
+
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintTop_toBottomOf="@id/favouriteLabel"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <LinearLayout
+            android:id="@+id/favourite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            />
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

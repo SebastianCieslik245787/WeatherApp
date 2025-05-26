@@ -1,6 +1,7 @@
 package com.example.weatherapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,6 +13,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import org.json.JSONObject
 
 class WeatherFragment : Fragment(), IFragment {
     private lateinit var forecastContainer: LinearLayout
@@ -51,8 +53,18 @@ class WeatherFragment : Fragment(), IFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        actualCity = City()
         setup(view)
+
+        val sharedPreferences = context?.getSharedPreferences("actualCity", Context.MODE_PRIVATE)
+        val actualCityJSON = sharedPreferences?.getString("actualCity", null)
+
+        if(actualCityJSON == null) {
+            setEmptyData()
+            return
+        }
+
+        actualCity = City(JSONObject(actualCityJSON))
+
 
         val futureWeatherForecast = FutureWeatherForecast()
 
@@ -60,12 +72,7 @@ class WeatherFragment : Fragment(), IFragment {
             val initialized = futureWeatherForecast.initialize(requireContext())
 
             if (!initialized) {
-                Handler(Looper.getMainLooper()).post {
-                    weatherLayout.removeAllViews()
-                    val emptyView = layoutInflater.inflate(R.layout.empty_data, weatherLayout, false)
-                    weatherLayout.addView(emptyView)
-                    loadListener?.onFragmentLoaded()
-                }
+                setEmptyData()
                 return@Thread
             }
 
@@ -182,5 +189,14 @@ class WeatherFragment : Fragment(), IFragment {
 
     override fun setLoadListener(listener: IFragmentLoadListener) {
         loadListener = listener
+    }
+
+    private fun setEmptyData(){
+        Handler(Looper.getMainLooper()).post {
+            weatherLayout.removeAllViews()
+            val emptyView = layoutInflater.inflate(R.layout.empty_data, weatherLayout, false)
+            weatherLayout.addView(emptyView)
+            loadListener?.onFragmentLoaded()
+        }
     }
 }

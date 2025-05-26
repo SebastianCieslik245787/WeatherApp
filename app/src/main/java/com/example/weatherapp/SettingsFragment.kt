@@ -47,6 +47,7 @@ class SettingsFragment : Fragment(), IFragment {
         val sharedPref = requireActivity().getSharedPreferences("settings", AppCompatActivity.MODE_PRIVATE)
         val savedUnit = sharedPref.getString("unit_preference", "metric")
         val spinnerPosition = adapter.getPosition(savedUnit)
+
         unitSpinner.setSelection(spinnerPosition)
 
         unitSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

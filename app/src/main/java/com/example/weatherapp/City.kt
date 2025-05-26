@@ -1,9 +1,12 @@
 package com.example.weatherapp
 
-class City {
-    private var cityName : String = "Warszawa"
-    private var lon : Double = 21.017532
-    private var lat : Double = 52.237049
+import org.json.JSONObject
+
+class City(data: JSONObject) {
+    private var cityName : String = data.getString("name")
+    private var cityRegion : String = data.getString("state")
+    private var lon : Double = data.getDouble("lon")
+    private var lat : Double = data.getDouble("lat")
 
     fun getCityName() : String{
         return this.cityName
@@ -15,5 +18,13 @@ class City {
 
     fun getLat() : Double{
         return this.lat
+    }
+
+    fun getCityRegion() : String{
+        return this.cityRegion
+    }
+
+    fun getCityInfo() : String{
+        return "$cityName ($cityRegion)"
     }
 }

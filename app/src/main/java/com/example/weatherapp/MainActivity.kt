@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
         loadingSpinner = findViewById(R.id.loadingSpinner)
 
         buttonForecast.setOnClickListener { replaceFragment(WeatherFragment()) }
+        buttonFindCity.setOnClickListener { replaceFragment(FindCityFragment()) }
 
         buttonSettings.setOnClickListener { replaceFragment(SettingsFragment()) }
     }

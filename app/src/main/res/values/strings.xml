@@ -18,6 +18,12 @@
     <string name="settingsLabel">Settings</string>
     <string name="select_unit_label">Select Unit:</string>
     <string name="empty_data">No Data to show</string>
+    <string name="input_city_name_placeholder">Input city name...</string>
+    <string name="find_city_label">Find city:</string>
+    <string name="favourite">favourite</string>
+    <string name="favourite_label">Favourite:</string>
+    <string name="actual_city_label">Actual City:</string>
+    <string name="find_city">Find City</string>
     <string-array name="units_array">
         <item>Standard</item>
         <item>Imperial</item>
