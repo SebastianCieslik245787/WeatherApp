@@ -6,4 +6,5 @@
     <color name="forecastItemBg">#FFFFFF</color>
     <color name="menuBg">#E2E2E2</color>
     <color name="noDataText">#B9B9B9</color>
+    <color name="errorBg">#952F2F</color>
 </resources>

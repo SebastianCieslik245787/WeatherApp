@@ -1,10 +1,14 @@
 package com.example.weatherapp
 
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 
 class MainActivity : AppCompatActivity(), IFragmentLoadListener {
@@ -12,6 +16,17 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
     private lateinit var buttonFindCity: ImageButton
     private lateinit var buttonSettings: ImageButton
     private lateinit var loadingSpinner: ProgressBar
+    private lateinit var error: TextView
+    private lateinit var fragmentFrame: FrameLayout
+
+    private lateinit var networkMonitor: NetworkMonitor
+
+    override fun onStart() {
+        super.onStart()
+        if (!isCurrentlyConnected()) {
+            toggleError(0.82f, true)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +42,23 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
         buttonFindCity = findViewById(R.id.buttonFind)
         buttonSettings = findViewById(R.id.buttonSettings)
         loadingSpinner = findViewById(R.id.loadingSpinner)
+        error = findViewById(R.id.error)
+        fragmentFrame = findViewById(R.id.fragmentContainer)
+
+        networkMonitor = NetworkMonitor(this)
+        networkMonitor.startMonitoring()
+
+        networkMonitor.onInternetLost = {
+            runOnUiThread {
+                toggleError(0.82f, true)
+            }
+        }
+
+        networkMonitor.onInternetAvailable = {
+            runOnUiThread {
+                toggleError(0.92f, false)
+            }
+        }
 
         buttonForecast.setOnClickListener { replaceFragment(WeatherFragment()) }
         buttonFindCity.setOnClickListener { replaceFragment(FindCityFragment()) }
@@ -51,5 +83,19 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
             .replace(R.id.fragmentContainer, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun isCurrentlyConnected(): Boolean {
+        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnected
+    }
+
+    private fun toggleError(value : Float, errorVisible : Boolean){
+        if(errorVisible) error.visibility = View.VISIBLE
+        else error.visibility = View.GONE
+        val params = fragmentFrame.layoutParams as ConstraintLayout.LayoutParams
+        params.matchConstraintPercentHeight = value
+        fragmentFrame.layoutParams = params
     }
 }

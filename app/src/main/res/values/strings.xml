@@ -24,6 +24,7 @@
     <string name="favourite_label">Favourite:</string>
     <string name="actual_city_label">Actual City:</string>
     <string name="find_city">Find City</string>
+    <string name="connection_error">No internet connection, the data may be incorrect!</string>
     <string-array name="units_array">
         <item>Standard</item>
         <item>Imperial</item>
