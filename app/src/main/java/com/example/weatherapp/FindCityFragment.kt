@@ -128,7 +128,7 @@ class FindCityFragment : Fragment(), IFragment {
     //Aktualne miasto widok
     private fun setActualCity(city: City) {
         setActualCitySP(city)
-        viewLifecycleOwner.lifecycleScope.launch {
+        lifecycleScope.launch {
             APIController.refreshActiveCity(requireContext())
         }
         activeCityView = layoutInflater.inflate(R.layout.favourite_item, actualCity, false)
@@ -198,7 +198,6 @@ class FindCityFragment : Fragment(), IFragment {
         if (city.equals(activeCity)) {
             activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
                 .setImageResource(R.drawable.heart)
-            activeCity?.toggleFavourite()
         }
         setFavourite()
     }
