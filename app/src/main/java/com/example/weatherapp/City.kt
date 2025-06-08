@@ -9,7 +9,7 @@ class City(data: JSONObject, favourite : Boolean) {
     private var lat : Double = data.getDouble("lat")
     private var isFavourite : Boolean = favourite
     private var isActive : Boolean = false
-    private var fileName : String = data.getString("filename")
+    //private var fileName : String = data.getString("filename")
 
 
     fun getCityName() : String{
@@ -32,15 +32,32 @@ class City(data: JSONObject, favourite : Boolean) {
         return "$cityName ($cityRegion)"
     }
 
-    fun getFileName(): String{
+   /* fun getFileName(): String{
         return this.fileName
-    }
+    }*/
 
     fun toggleActive(){
         this.isActive = !this.isActive
     }
 
+    fun isActive() : Boolean{
+        return this.isActive
+    }
+
     fun toggleFavourite(){
         this.isFavourite = !this.isFavourite
+    }
+
+    fun isFavourite() : Boolean{
+        return this.isFavourite
+    }
+
+    fun toJSON(): JSONObject {
+        return JSONObject().apply {
+            put("name", cityName)
+            put("state", cityRegion)
+            put("lon", lon)
+            put("lat", lat)
+        }
     }
 }

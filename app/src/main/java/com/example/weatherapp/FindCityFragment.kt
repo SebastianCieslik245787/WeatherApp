@@ -5,8 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -14,14 +13,19 @@ import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import org.json.JSONArray
 import org.json.JSONObject
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class FindCityFragment : Fragment(), IFragment {
     private var loadListener: IFragmentLoadListener? = null
-    private lateinit var inputCityName : AutoCompleteTextView
-    private lateinit var favouriteCities : LinearLayout
-    private lateinit var actualCity : LinearLayout
-    private lateinit var buttonFind : ImageButton
-    private var cityArr : MutableList<City> = mutableListOf()
+    private lateinit var inputCityName: EditText
+    private lateinit var favouriteCities: LinearLayout
+    private lateinit var foundCities: LinearLayout
+    private lateinit var actualCity: LinearLayout
+    private lateinit var buttonFind: ImageButton
+    private var favouriteCitiesArr: MutableList<City> = mutableListOf()
+    private lateinit var foundCitiesArr: MutableList<City>
+    private lateinit var activeCityView : View
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,45 +50,51 @@ class FindCityFragment : Fragment(), IFragment {
     override fun setup(view: View) {
         inputCityName = view.findViewById(R.id.findCity)
         favouriteCities = view.findViewById(R.id.favourite)
+        foundCities = view.findViewById(R.id.foundCities)
         actualCity = view.findViewById(R.id.actualCity)
         buttonFind = view.findViewById(R.id.findCityButton)
-        buttonFind.setOnClickListener { findCity() }
-
-        val cities = listOf("Warszawa\nMazwowieckie", "Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch", "Gdańsk", "Wrocław", "Poznań", "Łódź", "Szczecin")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, cities)
-
-        inputCityName.setAdapter(adapter)
-    }
-
-    private fun getCities() : Boolean{
-        val favouritesCitiesJSONString = loadJSONFromAsset("city.json", requireContext())
-        val data = JSONArray(favouritesCitiesJSONString)
-
-        if (data.length() < 1) return false
-
-        for (i in 0 until data.length()){
-            val cityObject = data.getJSONObject(i)
-            cityArr.add(City(cityObject))
+        buttonFind.setOnClickListener {
+            findCity()
+            inputCityName.text.clear()
         }
-        return true
     }
 
-    private fun loadJSONFromAsset(fileName: String, context: Context): String {
-        return context.assets.open(fileName).bufferedReader().use { it.readText() }
+
+    private fun getFavouriteCities(context: Context): MutableList<City> {
+        val sharedPref = context.getSharedPreferences("favourites", Context.MODE_PRIVATE)
+        val jsonString = sharedPref.getString("favourites_list", null) ?: return mutableListOf()
+        val jsonArray = JSONArray(jsonString)
+        val result = mutableListOf<City>()
+
+        for (i in 0 until jsonArray.length()) {
+            val cityObject = jsonArray.getJSONObject(i)
+            result.add(City(cityObject, true))
+        }
+
+        return result
     }
 
-    private fun setFavourite(){
-        getCities()
+    private fun setFavourite() {
+        favouriteCitiesArr = getFavouriteCities(requireContext())
 
-        for(i in cityArr){
+        favouriteCities.removeAllViews()
+
+        if (favouriteCitiesArr.isEmpty()) {
+            layoutInflater.inflate(R.layout.empty_data, favouriteCities, true)
+            return
+        }
+
+        for (i in favouriteCitiesArr) {
             val itemView = layoutInflater.inflate(R.layout.favourite_item, favouriteCities, false)
             itemView.findViewById<TextView>(R.id.cityName).text = i.getCityInfo()
-            itemView.setOnClickListener {setActualCity(i, true)}
+            itemView.findViewById<ImageButton>(R.id.favouriteButton)
+                .setOnClickListener { deleteFromFavourite(i, requireContext()) }
+            itemView.setOnClickListener { setActualCity(i) }
             favouriteCities.addView(itemView)
         }
     }
 
-    private fun setActualCitySP(city : City){
+    private fun setActualCitySP(city: City) {
         val sharedPref = requireActivity().getSharedPreferences("actualCity", Context.MODE_PRIVATE)
         val json = JSONObject().apply {
             put("name", city.getCityName())
@@ -98,23 +108,98 @@ class FindCityFragment : Fragment(), IFragment {
         }
     }
 
-    private fun setActualCity(city : City, isInFavourite : Boolean){
+    //Aktualne miasto widok
+    private fun setActualCity(city: City) {
         setActualCitySP(city)
         val itemView = layoutInflater.inflate(R.layout.favourite_item, actualCity, false)
         itemView.findViewById<TextView>(R.id.cityName).text = city.getCityInfo()
-        itemView.findViewById<ImageButton>(R.id.favouriteButton).setOnClickListener { deleteFromFavourite(itemView) }
+        itemView.findViewById<ImageButton>(R.id.favouriteButton)
+            .setOnClickListener { toggleFavourite(city, requireContext(), itemView) }
+        if (findInFavourites(city)) {
+            itemView.findViewById<ImageButton>(R.id.favouriteButton)
+                .setImageResource(R.drawable.favourite)
+        } else itemView.findViewById<ImageButton>(R.id.favouriteButton)
+            .setImageResource(R.drawable.heart)
         actualCity.removeAllViews()
         actualCity.addView(itemView)
-        if(!isInFavourite){
-            itemView.findViewById<ImageButton>(R.id.favouriteButton).setImageResource(R.drawable.favourite)
+        activeCityView = itemView
+        city.toggleActive()
+    }
+
+    //pobieranie miast z wyszukiwarki
+    private fun findCity() {
+        foundCities.removeAllViews()
+
+        val cityName = inputCityName.text.toString()
+
+        lifecycleScope.launch {
+            val res = APIController.findCities(cityName)
+            if (res == null || res.isEmpty()) {
+                layoutInflater.inflate(R.layout.empty_data, foundCities, true)
+                return@launch
+            }
+
+            foundCitiesArr = res.toMutableList()
+            for (i in foundCitiesArr) {
+                val itemView =
+                    layoutInflater.inflate(R.layout.founded_city_item, foundCities, false)
+                itemView.findViewById<TextView>(R.id.foundCityName).text = i.getCityName()
+                itemView.findViewById<TextView>(R.id.foundCityRegion).text = i.getCityRegion()
+                itemView.setOnClickListener {
+                    setActualCity(i)
+                    foundCities.removeAllViews()
+                }
+                foundCities.addView(itemView)
+            }
         }
     }
 
-    private fun deleteFromFavourite(view : View){
-        view.findViewById<ImageButton>(R.id.favouriteButton).setImageResource(R.drawable.heart)
+    private fun addToFavourite(city: City, context: Context) {
+        val sharedPref = context.getSharedPreferences("favourites", Context.MODE_PRIVATE)
+        val existing = sharedPref.getString("favourites_list", null)
+
+        val jsonArray = if (existing != null) JSONArray(existing) else JSONArray()
+
+        jsonArray.put(city.toJSON())
+        sharedPref.edit { putString("favourites_list", jsonArray.toString()) }
+        setFavourite()
     }
 
-    private fun findCity(){
+    private fun deleteFromFavourite(city: City, context: Context) {
+        val sharedPref = context.getSharedPreferences("favourites", Context.MODE_PRIVATE)
+        val updatedList = favouriteCitiesArr.filterNot {
+            it.getCityName() == city.getCityName()
+                    && it.getCityRegion() == city.getCityRegion()
+                    && it.getLon() == city.getLon()
+                    && it.getLat() == city.getLat()
+        }
+        val jsonArray = JSONArray()
+        for (city in updatedList) {
+            jsonArray.put(city.toJSON())
+        }
+        sharedPref.edit { putString("favourites_list", jsonArray.toString()) }
+        setFavourite()
+    }
 
+    private fun toggleFavourite(city: City, context: Context, item: View) {
+        if (city.isFavourite()) {
+            item.findViewById<ImageButton>(R.id.favouriteButton).setImageResource(R.drawable.heart)
+            deleteFromFavourite(city, context)
+        } else {
+            item.findViewById<ImageButton>(R.id.favouriteButton)
+                .setImageResource(R.drawable.favourite)
+            addToFavourite(city, context)
+        }
+        city.toggleFavourite()
+        setFavourite()
+    }
+
+    private fun findInFavourites(city: City): Boolean {
+        return favouriteCitiesArr.find {
+            it.getCityName() == city.getCityName()
+                    && it.getCityRegion() == city.getCityRegion()
+                    && it.getLon() == city.getLon()
+                    && it.getLat() == city.getLat()
+        } != null
     }
 }

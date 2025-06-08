@@ -63,7 +63,7 @@ class WeatherFragment : Fragment(), IFragment {
             return
         }
 
-        actualCity = City(JSONObject(actualCityJSON))
+        actualCity = City(JSONObject(actualCityJSON), true)
 
 
         val futureWeatherForecast = FutureWeatherForecast()

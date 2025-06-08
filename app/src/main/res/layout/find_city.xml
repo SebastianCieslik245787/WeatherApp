@@ -18,7 +18,7 @@
         android:text="@string/find_city_label"
         />
 
-    <AutoCompleteTextView
+    <EditText
         android:id="@+id/findCity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -37,6 +37,7 @@
         android:textSize="20sp"
         tools:ignore="RtlSymmetry" />
 
+
     <ImageButton
         android:id="@+id/findCityButton"
         android:layout_width="0dp"
@@ -53,11 +54,32 @@
         android:background="@color/transparent"
         />
 
+    <HorizontalScrollView
+        android:id="@+id/findCityScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintTop_toBottomOf="@id/findCity"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/foundCities"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            />
+    </HorizontalScrollView>
+
     <TextView
         android:id="@+id/activeCityLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/findCity"
+        app:layout_constraintTop_toBottomOf="@id/findCityScrollView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.9"
@@ -96,7 +118,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintHeight_percent="0.45"
         app:layout_constraintTop_toBottomOf="@id/favouriteLabel"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="50dp"
