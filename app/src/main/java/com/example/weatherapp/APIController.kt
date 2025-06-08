@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
+import org.json.JSONObject
 import kotlin.collections.mutableListOf
 
 class APIController {
@@ -99,11 +100,11 @@ class APIController {
         suspend fun refreshAllFavouriteCities(context: Context) =
             withContext(Dispatchers.IO) {
                 val sharedPrefFC = context.getSharedPreferences("favourites", Context.MODE_PRIVATE)
-                val sharedPref = context.getSharedPreferences("settings", AppCompatActivity.MODE_PRIVATE)
-                val unit : String = sharedPref.getString("unit_preference", "metric").toString()
-                val jsonString = sharedPrefFC.getString("favourites_list", null) ?: return@withContext
+                val jsonString =
+                    sharedPrefFC.getString("favourites_list", null) ?: return@withContext
                 val jsonArray = JSONArray(jsonString)
                 val cityList = mutableListOf<City>()
+                val unit = getUnitSP(context)
 
                 for (i in 0 until jsonArray.length()) {
                     val cityObject = jsonArray.getJSONObject(i)
@@ -130,5 +131,21 @@ class APIController {
                 jobs.awaitAll()
                 Log.d("Refresh", "DONE")
             }
+
+        suspend fun refreshActiveCity(context: Context) = withContext(Dispatchers.IO) {
+            val sharedPreferences = context.getSharedPreferences("actualCity", Context.MODE_PRIVATE)
+            val actualCityJSON = sharedPreferences?.getString("actualCity", null)
+
+            if (actualCityJSON == null) return@withContext
+
+            val activeCity = City(JSONObject(actualCityJSON), true)
+
+            refreshCityForecast(activeCity, context, getUnitSP(context))
+        }
+
+        fun getUnitSP(context: Context) : String{
+            val sharedPref = context.getSharedPreferences("settings", AppCompatActivity.MODE_PRIVATE)
+            return sharedPref.getString("unit_preference", "metric").toString()
+        }
     }
 }

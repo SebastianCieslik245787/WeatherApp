@@ -36,11 +36,12 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
 
         setup()
 
-        onFragmentLoading()
-
         lifecycleScope.launch {
+            APIController.refreshActiveCity(this@MainActivity)
             APIController.refreshAllFavouriteCities(this@MainActivity)
         }
+
+        onFragmentLoading()
         replaceFragment(WeatherFragment())
     }
 

@@ -62,17 +62,17 @@ class FindCityFragment : Fragment(), IFragment {
         }
     }
 
-    private fun setActiveCityFromSP(context: Context){
+    private fun setActiveCityFromSP(context: Context) {
         val sharedPref = context.getSharedPreferences("actualCity", Context.MODE_PRIVATE)
         val jsonString = sharedPref.getString("actualCity", null)
 
-        if(jsonString == null) return
+        if (jsonString == null) return
 
         val activeCityJSON = JSONObject(jsonString.toString())
 
         val temp = City(activeCityJSON, false)
         temp.toggleActive()
-        if(findInFavourites(temp)) temp.toggleFavourite()
+        if (findInFavourites(temp)) temp.toggleFavourite()
         setActualCity(temp)
     }
 
@@ -128,7 +128,9 @@ class FindCityFragment : Fragment(), IFragment {
     //Aktualne miasto widok
     private fun setActualCity(city: City) {
         setActualCitySP(city)
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            APIController.refreshActiveCity(requireContext())
+        }
         activeCityView = layoutInflater.inflate(R.layout.favourite_item, actualCity, false)
         activeCityView.findViewById<TextView>(R.id.cityName).text = city.getCityInfo()
         activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
@@ -193,8 +195,11 @@ class FindCityFragment : Fragment(), IFragment {
             jsonArray.put(city.toJSON())
         }
         sharedPref.edit { putString("favourites_list", jsonArray.toString()) }
-        if (city.equals(activeCity)) activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
-            .setImageResource(R.drawable.heart)
+        if (city.equals(activeCity)) {
+            activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
+                .setImageResource(R.drawable.heart)
+            activeCity?.toggleFavourite()
+        }
         setFavourite()
     }
 
@@ -212,7 +217,7 @@ class FindCityFragment : Fragment(), IFragment {
     }
 
     private fun findInFavourites(city: City?): Boolean {
-        if(city == null) return false
+        if (city == null) return false
         return favouriteCitiesArr.find {
             it.equals(city)
         } != null
