@@ -175,7 +175,7 @@ class WeatherFragment : Fragment(), IFragment {
     }
 
     private fun loadForecast(refresh : Boolean = false){
-        loadListener?.onFragmentLoading()
+        if(refresh) loadListener?.onFragmentLoading()
 
         val sharedPreferences = context?.getSharedPreferences("actualCity", Context.MODE_PRIVATE)
         val actualCityJSON = sharedPreferences?.getString("actualCity", null)
@@ -188,7 +188,7 @@ class WeatherFragment : Fragment(), IFragment {
         actualCity = City(JSONObject(actualCityJSON), true)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            if(refresh) APIController.refreshActiveCity(actualCity, requireContext(), actualUnit)
+            if(refresh) APIController.refreshCityForecast(actualCity, requireContext(), actualUnit)
             val futureWeatherForecast = FutureWeatherForecast()
             val initialized = futureWeatherForecast.initialize(requireContext(), actualCity)
 

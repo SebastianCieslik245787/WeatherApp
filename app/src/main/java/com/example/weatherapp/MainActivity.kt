@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), IFragmentLoadListener {
     private lateinit var buttonForecast: ImageButton
@@ -35,6 +37,10 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
         setup()
 
         onFragmentLoading()
+
+        lifecycleScope.launch {
+            APIController.refreshAllFavouriteCities(this@MainActivity)
+        }
         replaceFragment(WeatherFragment())
     }
 
@@ -78,12 +84,11 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
     }
 
     private fun replaceFragment(fragment: Fragment) {
+        onFragmentLoading()
 
         if (fragment is IFragment) {
             fragment.setLoadListener(this)
         }
-
-        onFragmentLoading()
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
