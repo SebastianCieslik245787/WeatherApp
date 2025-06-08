@@ -15,11 +15,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import org.json.JSONObject
 
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+
 class WeatherFragment : Fragment(), IFragment {
     private lateinit var forecastContainer: LinearLayout
     private lateinit var weatherLayout: LinearLayout
 
     private lateinit var actualWeatherIcon : ImageView
+    private lateinit var refreshButton : ImageView
     private lateinit var actualWeatherCityName : TextView
     private lateinit var actualWeatherDate : TextView
     private lateinit var actualWeatherTime : TextView
@@ -38,6 +42,7 @@ class WeatherFragment : Fragment(), IFragment {
 
     private lateinit var temperatureUnit : String
     private lateinit var windSpeedUnit : String
+    private lateinit var actualUnit : String
 
     private var loadListener: IFragmentLoadListener? = null
 
@@ -52,41 +57,8 @@ class WeatherFragment : Fragment(), IFragment {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setup(view)
-
-        val sharedPreferences = context?.getSharedPreferences("actualCity", Context.MODE_PRIVATE)
-        val actualCityJSON = sharedPreferences?.getString("actualCity", null)
-
-        if(actualCityJSON == null) {
-            setEmptyData()
-            return
-        }
-
-        actualCity = City(JSONObject(actualCityJSON), true)
-
-
-        val futureWeatherForecast = FutureWeatherForecast()
-
-        Thread {
-            val initialized = futureWeatherForecast.initialize(requireContext())
-
-            if (!initialized) {
-                setEmptyData()
-                return@Thread
-            }
-
-            val forecast: MutableList<FutureWeatherForecastItem> =
-                futureWeatherForecast.getForecast()
-
-            Handler(Looper.getMainLooper()).post {
-                setActualWeather(forecast[0])
-                setMoreInfo(forecast[0])
-                setFutureForecast(forecast)
-
-                loadListener?.onFragmentLoaded()
-            }
-        }.start()
+        loadForecast()
     }
 
     override fun setup(view: View) {
@@ -105,17 +77,18 @@ class WeatherFragment : Fragment(), IFragment {
         moreInfoHumidity = view.findViewById(R.id.humidityVal)
         moreInfoWindSpeed = view.findViewById(R.id.windVal)
         moreInfoWindDirection = view.findViewById(R.id.windDirectionVal)
-
+        refreshButton = view.findViewById(R.id.refreshIcon)
+        refreshButton.setOnClickListener { loadForecast(true) }
         getUnits()
     }
 
     @SuppressLint("SetTextI18n")
     private fun setFutureForecast(forecast: MutableList<FutureWeatherForecastItem>) {
-        for (i in forecast) {
+        for (i in 1 until forecast.size) {
             val itemView = layoutInflater.inflate(R.layout.forecast_item, forecastContainer, false)
-            itemView.findViewById<TextView>(R.id.forecastItemName).text = i.getTime()
-            itemView.findViewById<TextView>(R.id.forecastItemTemperature).text = i.getTemperature() + temperatureUnit
-            setIcon(itemView.findViewById(R.id.forecastItemIcon), i)
+            itemView.findViewById<TextView>(R.id.forecastItemName).text = forecast[i].getTime()
+            itemView.findViewById<TextView>(R.id.forecastItemTemperature).text = forecast[i].getTemperature() + temperatureUnit
+            setIcon(itemView.findViewById(R.id.forecastItemIcon), forecast[i])
             forecastContainer.addView(itemView)
         }
     }
@@ -172,7 +145,7 @@ class WeatherFragment : Fragment(), IFragment {
 
     private fun getUnits(){
         val sharedPref = requireActivity().getSharedPreferences("settings", AppCompatActivity.MODE_PRIVATE)
-        val savedUnit = sharedPref.getString("unit_preference", "metric")
+        val savedUnit : String = sharedPref.getString("unit_preference", "metric").toString()
         if(savedUnit == "Imperial"){
             temperatureUnit = " °F"
             windSpeedUnit = " mi/s"
@@ -185,6 +158,7 @@ class WeatherFragment : Fragment(), IFragment {
             temperatureUnit = " K"
             windSpeedUnit = " m/s"
         }
+        actualUnit = savedUnit
     }
 
     override fun setLoadListener(listener: IFragmentLoadListener) {
@@ -196,6 +170,40 @@ class WeatherFragment : Fragment(), IFragment {
             weatherLayout.removeAllViews()
             val emptyView = layoutInflater.inflate(R.layout.empty_data, weatherLayout, false)
             weatherLayout.addView(emptyView)
+            loadListener?.onFragmentLoaded()
+        }
+    }
+
+    private fun loadForecast(refresh : Boolean = false){
+        loadListener?.onFragmentLoading()
+
+        val sharedPreferences = context?.getSharedPreferences("actualCity", Context.MODE_PRIVATE)
+        val actualCityJSON = sharedPreferences?.getString("actualCity", null)
+
+        if (actualCityJSON == null) {
+            setEmptyData()
+            return
+        }
+
+        actualCity = City(JSONObject(actualCityJSON), true)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            if(refresh) APIController.refreshActiveCity(actualCity, requireContext(), actualUnit)
+            val futureWeatherForecast = FutureWeatherForecast()
+            val initialized = futureWeatherForecast.initialize(requireContext(), actualCity)
+
+            if (!initialized) {
+                setEmptyData()
+                return@launch
+            }
+
+            val forecast: MutableList<FutureWeatherForecastItem> = futureWeatherForecast.getForecast()
+
+            forecastContainer.removeAllViews()
+            setActualWeather(forecast[0])
+            setMoreInfo(forecast[0])
+            setFutureForecast(forecast)
+
             loadListener?.onFragmentLoaded()
         }
     }

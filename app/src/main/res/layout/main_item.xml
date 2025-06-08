@@ -72,8 +72,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:padding="30dp"
-        app:layout_constraintHeight_percent="0.8"
-        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.7"
+        app:layout_constraintWidth_percent="0.7"
         android:scaleType="centerInside"
         />
 

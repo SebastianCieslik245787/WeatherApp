@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
 
         setup()
 
+        onFragmentLoading()
         replaceFragment(WeatherFragment())
     }
 
@@ -71,13 +72,18 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
         findViewById<View>(R.id.fragmentContainer).visibility = View.VISIBLE
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    override fun onFragmentLoading() {
         loadingSpinner.visibility = View.VISIBLE
         findViewById<View>(R.id.fragmentContainer).visibility = View.GONE
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
 
         if (fragment is IFragment) {
             fragment.setLoadListener(this)
         }
+
+        onFragmentLoading()
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)

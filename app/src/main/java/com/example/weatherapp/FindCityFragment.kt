@@ -25,7 +25,8 @@ class FindCityFragment : Fragment(), IFragment {
     private lateinit var buttonFind: ImageButton
     private var favouriteCitiesArr: MutableList<City> = mutableListOf()
     private lateinit var foundCitiesArr: MutableList<City>
-    private lateinit var activeCityView : View
+    private lateinit var activeCityView: View
+    private var activeCity: City? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +40,8 @@ class FindCityFragment : Fragment(), IFragment {
         setup(view)
 
         setFavourite()
+
+        setActiveCityFromSP(requireContext())
 
         loadListener?.onFragmentLoaded()
     }
@@ -57,6 +60,20 @@ class FindCityFragment : Fragment(), IFragment {
             findCity()
             inputCityName.text.clear()
         }
+    }
+
+    private fun setActiveCityFromSP(context: Context){
+        val sharedPref = context.getSharedPreferences("actualCity", Context.MODE_PRIVATE)
+        val jsonString = sharedPref.getString("actualCity", null)
+
+        if(jsonString == null) return
+
+        val activeCityJSON = JSONObject(jsonString.toString())
+
+        val temp = City(activeCityJSON, false)
+        temp.toggleActive()
+        if(findInFavourites(temp)) temp.toggleFavourite()
+        setActualCity(temp)
     }
 
 
@@ -111,19 +128,20 @@ class FindCityFragment : Fragment(), IFragment {
     //Aktualne miasto widok
     private fun setActualCity(city: City) {
         setActualCitySP(city)
-        val itemView = layoutInflater.inflate(R.layout.favourite_item, actualCity, false)
-        itemView.findViewById<TextView>(R.id.cityName).text = city.getCityInfo()
-        itemView.findViewById<ImageButton>(R.id.favouriteButton)
-            .setOnClickListener { toggleFavourite(city, requireContext(), itemView) }
+
+        activeCityView = layoutInflater.inflate(R.layout.favourite_item, actualCity, false)
+        activeCityView.findViewById<TextView>(R.id.cityName).text = city.getCityInfo()
+        activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
+            .setOnClickListener { toggleFavourite(city, requireContext(), activeCityView) }
         if (findInFavourites(city)) {
-            itemView.findViewById<ImageButton>(R.id.favouriteButton)
+            activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
                 .setImageResource(R.drawable.favourite)
-        } else itemView.findViewById<ImageButton>(R.id.favouriteButton)
+        } else activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
             .setImageResource(R.drawable.heart)
         actualCity.removeAllViews()
-        actualCity.addView(itemView)
-        activeCityView = itemView
+        actualCity.addView(activeCityView)
         city.toggleActive()
+        activeCity = city
     }
 
     //pobieranie miast z wyszukiwarki
@@ -133,7 +151,7 @@ class FindCityFragment : Fragment(), IFragment {
         val cityName = inputCityName.text.toString()
 
         lifecycleScope.launch {
-            val res = APIController.findCities(cityName)
+            val res = APIController.findCities(cityName, requireContext())
             if (res == null || res.isEmpty()) {
                 layoutInflater.inflate(R.layout.empty_data, foundCities, true)
                 return@launch
@@ -168,16 +186,15 @@ class FindCityFragment : Fragment(), IFragment {
     private fun deleteFromFavourite(city: City, context: Context) {
         val sharedPref = context.getSharedPreferences("favourites", Context.MODE_PRIVATE)
         val updatedList = favouriteCitiesArr.filterNot {
-            it.getCityName() == city.getCityName()
-                    && it.getCityRegion() == city.getCityRegion()
-                    && it.getLon() == city.getLon()
-                    && it.getLat() == city.getLat()
+            it.equals(city)
         }
         val jsonArray = JSONArray()
         for (city in updatedList) {
             jsonArray.put(city.toJSON())
         }
         sharedPref.edit { putString("favourites_list", jsonArray.toString()) }
+        if (city.equals(activeCity)) activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
+            .setImageResource(R.drawable.heart)
         setFavourite()
     }
 
@@ -194,12 +211,10 @@ class FindCityFragment : Fragment(), IFragment {
         setFavourite()
     }
 
-    private fun findInFavourites(city: City): Boolean {
+    private fun findInFavourites(city: City?): Boolean {
+        if(city == null) return false
         return favouriteCitiesArr.find {
-            it.getCityName() == city.getCityName()
-                    && it.getCityRegion() == city.getCityRegion()
-                    && it.getLon() == city.getLon()
-                    && it.getLat() == city.getLat()
+            it.equals(city)
         } != null
     }
 }

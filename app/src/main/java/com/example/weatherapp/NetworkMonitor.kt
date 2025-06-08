@@ -2,9 +2,11 @@ package com.example.weatherapp
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.CONNECTIVITY_SERVICE
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
+import androidx.core.content.ContextCompat.getSystemService
 
 class NetworkMonitor(private val context: Context) {
 
