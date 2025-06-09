@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), IFragmentLoadListener {
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
     private lateinit var fragmentFrame: FrameLayout
 
     private lateinit var networkMonitor: NetworkMonitor
+
+    private var REFRESH_TIMESTAMP : Long = 1000 * 60 * 15
 
     override fun onStart() {
         super.onStart()
@@ -38,7 +42,13 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
 
         lifecycleScope.launch {
             APIController.refreshActiveCity(this@MainActivity)
-            APIController.refreshAllFavouriteCities(this@MainActivity)
+        }
+
+        lifecycleScope.launch {
+            while (isActive) {
+                APIController.refreshAllFavouriteCities(this@MainActivity)
+                delay(REFRESH_TIMESTAMP)
+            }
         }
 
         onFragmentLoading()
