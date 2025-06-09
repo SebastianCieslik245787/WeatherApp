@@ -146,11 +146,11 @@ class WeatherFragment : Fragment(), IFragment {
     private fun getUnits(){
         val sharedPref = requireActivity().getSharedPreferences("settings", AppCompatActivity.MODE_PRIVATE)
         val savedUnit : String = sharedPref.getString("unit_preference", "metric").toString()
-        if(savedUnit == "Imperial"){
+        if(savedUnit == "imperial"){
             temperatureUnit = " °F"
             windSpeedUnit = " mi/s"
         }
-        else if(savedUnit == "Metric"){
+        else if(savedUnit == "metric"){
             temperatureUnit = " °C"
             windSpeedUnit = " m/s"
         }

@@ -63,29 +63,43 @@ class APIController {
             withContext(Dispatchers.IO) {
                 try {
                     val client = OkHttpClient()
-                    val url =
-                        "https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${city.getLat()}&lon=${city.getLon()}&appid=$API_KEY&units=$unit"
-                    val request = Request.Builder().url(url).build()
 
-                    client.newCall(request).execute().use { response ->
+                    val currentUrl =
+                        "https://api.openweathermap.org/data/2.5/weather?lat=${city.getLat()}&lon=${city.getLon()}&appid=$API_KEY&units=$unit"
+                    val currentRequest = Request.Builder().url(currentUrl).build()
+
+                    val currentResponseData = client.newCall(currentRequest).execute().use { response ->
+                        if (!response.isSuccessful) null else response.body?.string()
+                    }
+
+                    val forecastUrl =
+                        "https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${city.getLat()}&lon=${city.getLon()}&appid=$API_KEY&units=$unit"
+                    val forecastRequest = Request.Builder().url(forecastUrl).build()
+
+                    val forecastResponseData = client.newCall(forecastRequest).execute().use { response ->
                         if (!response.isSuccessful) {
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     context,
-                                    "Failed to fetch weather data",
+                                    "Failed to fetch weather forecast data",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-                            return@withContext
+                            null
+                        } else {
+                            response.body?.string()
                         }
+                    }
 
-                        val responseData = response.body?.string() ?: return@withContext
+                    if (currentResponseData != null && forecastResponseData != null) {
+                        val combinedJson = "[${currentResponseData.trim()}, ${forecastResponseData.trim()}]"
 
                         val fileName = city.getFileName()
                         context.openFileOutput(fileName, Context.MODE_PRIVATE).use { output ->
-                            output.write(responseData.toByteArray())
+                            output.write(combinedJson.toByteArray())
                         }
                     }
+
                 } catch (_: Exception) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
@@ -100,8 +114,7 @@ class APIController {
         suspend fun refreshAllFavouriteCities(context: Context) =
             withContext(Dispatchers.IO) {
                 val sharedPrefFC = context.getSharedPreferences("favourites", Context.MODE_PRIVATE)
-                val jsonString =
-                    sharedPrefFC.getString("favourites_list", null) ?: return@withContext
+                val jsonString = sharedPrefFC.getString("favourites_list", null) ?: return@withContext
                 val jsonArray = JSONArray(jsonString)
                 val cityList = mutableListOf<City>()
                 val unit = getUnitSP(context)
@@ -145,7 +158,7 @@ class APIController {
 
         fun getUnitSP(context: Context) : String{
             val sharedPref = context.getSharedPreferences("settings", AppCompatActivity.MODE_PRIVATE)
-            return sharedPref.getString("unit_preference", "metric").toString()
+            return sharedPref.getString("unit_preference", "standard").toString()
         }
     }
 }

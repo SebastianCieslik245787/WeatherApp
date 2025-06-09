@@ -1,11 +1,15 @@
 package com.example.weatherapp
 
-import android.util.Log
 import org.json.JSONObject
+import java.time.Instant
+import java.time.ZoneId
 import kotlin.math.roundToInt
+import java.time.format.DateTimeFormatter
 
 class FutureWeatherForecastItem(data: JSONObject) {
-    private var date: String = data.get("dt_txt").toString().replace("-", ".")
+    private var UNIX_HOUR : Long = 3600L
+    private var unixTime: Long = data.getLong("dt") - data.getLong("dt") % UNIX_HOUR
+    private var dateTimeInZone = Instant.ofEpochSecond(unixTime).atZone(ZoneId.systemDefault())
     private var temperature: Double = data.getJSONObject("main").getDouble("temp")
     private var weatherType: Int =  data.getJSONArray("weather").getJSONObject(0).getInt("id")
     private var pressure : Int = data.getJSONObject("main").getInt("pressure")
@@ -14,10 +18,11 @@ class FutureWeatherForecastItem(data: JSONObject) {
     private var windDeg : Int = data.getJSONObject("wind").getInt("deg")
     private var rain: Double = data.optJSONObject("rain")?.optDouble("1h") ?: 0.0
     private var visibility : Int = data.getInt("visibility")
-    private var partOfDay : String = data.getJSONObject("sys").get("pod").toString()
+    private var partOfDay : String = data.getJSONObject("sys").optString("pod", "0")
 
     fun getTime(): String {
-        return date.substring(11,16)
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        return dateTimeInZone.format(formatter)
     }
 
     fun getPartOfDay() : String{
@@ -25,7 +30,8 @@ class FutureWeatherForecastItem(data: JSONObject) {
     }
 
     fun getDate() : String{
-        return this.date.substring(0,10)
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        return dateTimeInZone.format(formatter)
     }
 
     fun getPressure() : Int{

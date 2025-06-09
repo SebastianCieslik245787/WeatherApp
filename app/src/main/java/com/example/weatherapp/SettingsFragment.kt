@@ -10,6 +10,9 @@ import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.core.content.edit
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment(), IFragment {
     private lateinit var unitSpinner: Spinner
@@ -55,6 +58,9 @@ class SettingsFragment : Fragment(), IFragment {
                 val selectedUnit = parent.getItemAtPosition(position).toString()
                 sharedPref.edit {
                     putString("unit_preference", selectedUnit)
+                }
+                lifecycleScope.launch{
+                    APIController.refreshActiveCity(requireContext())
                 }
             }
 

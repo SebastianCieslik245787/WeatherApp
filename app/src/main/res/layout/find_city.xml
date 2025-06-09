@@ -91,7 +91,7 @@
     <LinearLayout
         android:id="@+id/actualCity"
         android:layout_width="0dp"
-        android:layout_height="75dp"
+        android:layout_height="80dp"
         android:orientation="horizontal"
         app:layout_constraintWidth_percent="0.9"
         app:layout_constraintTop_toBottomOf="@id/activeCityLabel"

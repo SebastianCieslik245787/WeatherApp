@@ -1,5 +1,7 @@
 package com.example.weatherapp
 
+import android.content.Context
+import android.util.Log
 import org.json.JSONObject
 
 class City(data: JSONObject, favourite : Boolean) {
@@ -67,5 +69,14 @@ class City(data: JSONObject, favourite : Boolean) {
     fun equals(city: City?) : Boolean{
         if(city == null) return false
         return this.cityName == city.cityName && this.cityRegion == city.cityRegion && this.lon == city.lon && this.lat == city.lat
+    }
+
+    fun deleteCityWeatherFile(context: Context){
+        val deleted = context.deleteFile(this.fileName)
+        if (deleted) {
+            Log.d("FileDelete", "File $fileName deleted successfully")
+        } else {
+            Log.d("FileDelete", "File $fileName not found or couldn't be deleted")
+        }
     }
 }

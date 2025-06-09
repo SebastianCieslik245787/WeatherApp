@@ -143,6 +143,7 @@ class FindCityFragment : Fragment(), IFragment {
         actualCity.removeAllViews()
         actualCity.addView(activeCityView)
         city.toggleActive()
+        if(activeCity != null && !activeCity!!.isFavourite()) activeCity!!.deleteCityWeatherFile(requireContext())
         activeCity = city
     }
 
@@ -186,6 +187,7 @@ class FindCityFragment : Fragment(), IFragment {
     }
 
     private fun deleteFromFavourite(city: City, context: Context) {
+        if(!city.equals(activeCity)) city.deleteCityWeatherFile(requireContext())
         val sharedPref = context.getSharedPreferences("favourites", Context.MODE_PRIVATE)
         val updatedList = favouriteCitiesArr.filterNot {
             it.equals(city)
