@@ -203,9 +203,7 @@ class WeatherFragment : Fragment(), IFragment {
             setActualWeather(forecast[0])
             setMoreInfo(forecast[0])
             setFutureForecast(forecast)
-
             loadListener?.onFragmentLoaded()
-
         }
     }
 }

@@ -133,4 +133,12 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
             fragmentFrame!!.layoutParams = params
         }
     }
+
+    override fun refreshWeather() {
+        if(findViewById<FrameLayout?>(R.id.forecastContainer) != null){
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.forecastContainer, WeatherFragment())
+                .commit()
+        }
+    }
 }
