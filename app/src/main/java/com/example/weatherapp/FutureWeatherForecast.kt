@@ -23,9 +23,9 @@ class FutureWeatherForecast {
 
         forecastItems = mutableListOf()
 
-        val actualTime = Instant.now().epochSecond
+        val actualTime = Instant.now().epochSecond - (Instant.now().epochSecond % UNIX_HOUR)
 
-        if((actualTime - (actualTime % UNIX_HOUR)) - actualWeather.get("dt").toString().toLong() <= 0) forecastItems.add(FutureWeatherForecastItem(actualWeather as JSONObject))
+        if(actualTime - actualWeather.get("dt").toString().toLong() <= 0) forecastItems.add(FutureWeatherForecastItem(actualWeather as JSONObject))
 
         for (i in 0 until forecastData.length()) {
 

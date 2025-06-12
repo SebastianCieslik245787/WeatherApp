@@ -16,16 +16,16 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), IFragmentLoadListener {
-    private lateinit var buttonForecast: ImageButton
-    private lateinit var buttonFindCity: ImageButton
-    private lateinit var buttonSettings: ImageButton
+    private var buttonForecast: ImageButton? = null
+    private var buttonFindCity: ImageButton? = null
+    private var buttonSettings: ImageButton? = null
     private lateinit var loadingSpinner: ProgressBar
     private lateinit var error: TextView
-    private lateinit var fragmentFrame: FrameLayout
+    private var fragmentFrame: FrameLayout? = null
 
     private lateinit var networkMonitor: NetworkMonitor
 
-    private var REFRESH_TIMESTAMP : Long = 1000 * 60 * 15
+    private var REFRESH_TIMESTAMP: Long = 1000 * 60 * 15
 
     override fun onStart() {
         super.onStart()
@@ -51,8 +51,19 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
             }
         }
 
-        onFragmentLoading()
-        replaceFragment(WeatherFragment())
+        if (findViewById<FrameLayout?>(R.id.forecastContainer) != null && findViewById<FrameLayout?>(
+                R.id.findCityContainer
+            ) != null && findViewById<FrameLayout?>(R.id.settingsContainer) != null
+        ) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.forecastContainer, WeatherFragment())
+                .replace(R.id.findCityContainer, FindCityFragment())
+                .replace(R.id.settingsContainer, SettingsFragment())
+                .commit()
+        } else {
+            onFragmentLoading()
+            replaceFragment(WeatherFragment())
+        }
     }
 
     private fun setup() {
@@ -78,10 +89,10 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
             }
         }
 
-        buttonForecast.setOnClickListener { replaceFragment(WeatherFragment()) }
-        buttonFindCity.setOnClickListener { replaceFragment(FindCityFragment()) }
+        buttonForecast?.setOnClickListener { replaceFragment(WeatherFragment()) }
+        buttonFindCity?.setOnClickListener { replaceFragment(FindCityFragment()) }
 
-        buttonSettings.setOnClickListener { replaceFragment(SettingsFragment()) }
+        buttonSettings?.setOnClickListener { replaceFragment(SettingsFragment()) }
     }
 
     override fun onFragmentLoaded() {
@@ -113,11 +124,13 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
         return activeNetwork != null && activeNetwork.isConnected
     }
 
-    private fun toggleError(value : Float, errorVisible : Boolean){
-        if(errorVisible) error.visibility = View.VISIBLE
+    private fun toggleError(value: Float, errorVisible: Boolean) {
+        if (errorVisible) error.visibility = View.VISIBLE
         else error.visibility = View.GONE
-        val params = fragmentFrame.layoutParams as ConstraintLayout.LayoutParams
-        params.matchConstraintPercentHeight = value
-        fragmentFrame.layoutParams = params
+        if(fragmentFrame != null){
+            val params = fragmentFrame!!.layoutParams as ConstraintLayout.LayoutParams
+            params.matchConstraintPercentHeight = value
+            fragmentFrame!!.layoutParams = params
+        }
     }
 }

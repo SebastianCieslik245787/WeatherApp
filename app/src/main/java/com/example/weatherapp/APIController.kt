@@ -142,7 +142,6 @@ class APIController {
                 }
 
                 jobs.awaitAll()
-                Log.d("Refresh", "DONE")
             }
 
         suspend fun refreshActiveCity(context: Context) = withContext(Dispatchers.IO) {

@@ -78,8 +78,10 @@ class FindCityFragment : Fragment(), IFragment {
 
 
     private fun getFavouriteCities(context: Context): MutableList<City> {
+
         val sharedPref = context.getSharedPreferences("favourites", Context.MODE_PRIVATE)
         val jsonString = sharedPref.getString("favourites_list", null) ?: return mutableListOf()
+
         val jsonArray = JSONArray(jsonString)
         val result = mutableListOf<City>()
 
@@ -128,22 +130,32 @@ class FindCityFragment : Fragment(), IFragment {
     //Aktualne miasto widok
     private fun setActualCity(city: City) {
         setActualCitySP(city)
+
         lifecycleScope.launch {
             APIController.refreshActiveCity(requireContext())
         }
+
         activeCityView = layoutInflater.inflate(R.layout.favourite_item, actualCity, false)
         activeCityView.findViewById<TextView>(R.id.cityName).text = city.getCityInfo()
+
         activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
             .setOnClickListener { toggleFavourite(city, requireContext(), activeCityView) }
+
         if (findInFavourites(city)) {
             activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
                 .setImageResource(R.drawable.favourite)
-        } else activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
+        }
+
+        else activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
             .setImageResource(R.drawable.heart)
+
         actualCity.removeAllViews()
         actualCity.addView(activeCityView)
+
         city.toggleActive()
+
         if(activeCity != null && !activeCity!!.isFavourite()) activeCity!!.deleteCityWeatherFile(requireContext())
+
         activeCity = city
     }
 
@@ -170,6 +182,7 @@ class FindCityFragment : Fragment(), IFragment {
                     setActualCity(i)
                     foundCities.removeAllViews()
                 }
+
                 foundCities.addView(itemView)
             }
         }
@@ -189,18 +202,24 @@ class FindCityFragment : Fragment(), IFragment {
     private fun deleteFromFavourite(city: City, context: Context) {
         if(!city.equals(activeCity)) city.deleteCityWeatherFile(requireContext())
         val sharedPref = context.getSharedPreferences("favourites", Context.MODE_PRIVATE)
+
         val updatedList = favouriteCitiesArr.filterNot {
             it.equals(city)
         }
+
         val jsonArray = JSONArray()
+
         for (city in updatedList) {
             jsonArray.put(city.toJSON())
         }
+
         sharedPref.edit { putString("favourites_list", jsonArray.toString()) }
+
         if (city.equals(activeCity)) {
             activeCityView.findViewById<ImageButton>(R.id.favouriteButton)
                 .setImageResource(R.drawable.heart)
         }
+
         setFavourite()
     }
 

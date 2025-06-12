@@ -205,6 +205,7 @@ class WeatherFragment : Fragment(), IFragment {
             setFutureForecast(forecast)
 
             loadListener?.onFragmentLoaded()
+
         }
     }
 }

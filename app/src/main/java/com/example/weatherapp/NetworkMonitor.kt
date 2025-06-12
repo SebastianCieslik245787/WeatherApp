@@ -18,7 +18,7 @@ class NetworkMonitor(private val context: Context) {
     @SuppressLint("ServiceCast")
     fun startMonitoring() {
         val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
 
         val builder = NetworkRequest.Builder()
         connectivityManager.registerNetworkCallback(
@@ -35,9 +35,5 @@ class NetworkMonitor(private val context: Context) {
                 }
             }
         )
-    }
-
-    fun isConnected(): Boolean {
-        return isConnected
     }
 }

@@ -10,7 +10,6 @@ import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.core.content.edit
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
