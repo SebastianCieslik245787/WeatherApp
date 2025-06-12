@@ -157,6 +157,8 @@ class FindCityFragment : Fragment(), IFragment {
         if(activeCity != null && !activeCity!!.isFavourite()) activeCity!!.deleteCityWeatherFile(requireContext())
 
         activeCity = city
+
+        loadListener?.refreshWeather()
     }
 
     //pobieranie miast z wyszukiwarki
