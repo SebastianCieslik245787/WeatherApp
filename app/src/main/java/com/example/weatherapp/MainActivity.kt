@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), IFragmentLoadListener {
+class MainActivity : AppCompatActivity(), IFragmentLoadListener, FindCityFragment.OnActiveCityChangedListener {
     private var buttonForecast: ImageButton? = null
     private var buttonFindCity: ImageButton? = null
     private var buttonSettings: ImageButton? = null
@@ -134,11 +134,13 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener {
         }
     }
 
-    override fun refreshWeather() {
-        if(findViewById<FrameLayout?>(R.id.forecastContainer) != null){
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.forecastContainer, WeatherFragment())
-                .commit()
+    override fun onActiveCityChanged() {
+        // Spróbuj znaleźć istniejący fragment pogody w menedżerze
+        val fragment = supportFragmentManager.fragments.find { it is WeatherFragment }
+
+        // Jeśli fragment został znaleziony i jest widoczny, odśwież go
+        if (fragment is WeatherFragment && fragment.isVisible) {
+            fragment.refreshForecast()
         }
     }
 }

@@ -28,6 +28,26 @@ class FindCityFragment : Fragment(), IFragment {
     private lateinit var activeCityView: View
     private var activeCity: City? = null
 
+    interface OnActiveCityChangedListener {
+        fun onActiveCityChanged()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnActiveCityChangedListener) {
+            cityChangedListener = context
+        } else {
+            throw RuntimeException("$context must implement OnActiveCityChangedListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        cityChangedListener = null
+    }
+
+    private var cityChangedListener: OnActiveCityChangedListener? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -158,7 +178,7 @@ class FindCityFragment : Fragment(), IFragment {
 
         activeCity = city
 
-        loadListener?.refreshWeather()
+        cityChangedListener?.onActiveCityChanged()
     }
 
     //pobieranie miast z wyszukiwarki

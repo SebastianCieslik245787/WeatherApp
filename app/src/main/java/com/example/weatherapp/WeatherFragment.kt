@@ -46,6 +46,11 @@ class WeatherFragment : Fragment(), IFragment {
 
     private var loadListener: IFragmentLoadListener? = null
 
+    fun refreshForecast() {
+        // Po prostu wywołujemy istniejącą logikę ładowania z flagą refresh = true
+        loadForecast(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
