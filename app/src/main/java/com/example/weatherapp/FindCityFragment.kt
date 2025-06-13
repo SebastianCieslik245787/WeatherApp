@@ -28,13 +28,9 @@ class FindCityFragment : Fragment(), IFragment {
     private lateinit var activeCityView: View
     private var activeCity: City? = null
 
-    interface OnActiveCityChangedListener {
-        fun onActiveCityChanged()
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnActiveCityChangedListener) {
+        if (context is IOnActiveCityChangedListener) {
             cityChangedListener = context
         } else {
             throw RuntimeException("$context must implement OnActiveCityChangedListener")
@@ -46,7 +42,7 @@ class FindCityFragment : Fragment(), IFragment {
         cityChangedListener = null
     }
 
-    private var cityChangedListener: OnActiveCityChangedListener? = null
+    private var cityChangedListener: IOnActiveCityChangedListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -127,7 +123,10 @@ class FindCityFragment : Fragment(), IFragment {
             val itemView = layoutInflater.inflate(R.layout.favourite_item, favouriteCities, false)
             itemView.findViewById<TextView>(R.id.cityName).text = i.getCityInfo()
             itemView.findViewById<ImageButton>(R.id.favouriteButton)
-                .setOnClickListener { deleteFromFavourite(i, requireContext()) }
+                .setOnClickListener {
+                    deleteFromFavourite(i, requireContext())
+                    cityChangedListener?.onActiveCityChanged()
+                }
             itemView.setOnClickListener { setActualCity(i) }
             favouriteCities.addView(itemView)
         }
@@ -147,7 +146,6 @@ class FindCityFragment : Fragment(), IFragment {
         }
     }
 
-    //Aktualne miasto widok
     private fun setActualCity(city: City) {
         setActualCitySP(city)
 

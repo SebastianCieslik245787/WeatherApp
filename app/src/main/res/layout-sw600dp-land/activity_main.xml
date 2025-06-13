@@ -27,12 +27,13 @@
     <FrameLayout
         android:id="@+id/forecastContainer"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/error"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/findCityContainer"
-        app:layout_constraintWidth_percent="0.7">
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintHeight_percent="1">
     </FrameLayout>
 
     <FrameLayout

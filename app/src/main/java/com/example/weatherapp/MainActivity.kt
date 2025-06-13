@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), IFragmentLoadListener, FindCityFragment.OnActiveCityChangedListener {
+class MainActivity : AppCompatActivity(), IFragmentLoadListener, IOnActiveCityChangedListener {
     private var buttonForecast: ImageButton? = null
     private var buttonFindCity: ImageButton? = null
     private var buttonSettings: ImageButton? = null
@@ -30,7 +30,13 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener, FindCityFragmen
     override fun onStart() {
         super.onStart()
         if (!isCurrentlyConnected()) {
-            toggleError(0.82f, true)
+            if (findViewById<FrameLayout?>(R.id.forecastContainer) != null && findViewById<FrameLayout?>(
+                    R.id.findCityContainer
+                ) != null && findViewById<FrameLayout?>(R.id.settingsContainer) != null
+            ) toggleError(0.7f, true)
+            else{
+                toggleError(0.82f, true)
+            }
         }
     }
 
@@ -79,13 +85,25 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener, FindCityFragmen
 
         networkMonitor.onInternetLost = {
             runOnUiThread {
-                toggleError(0.82f, true)
+                if (findViewById<FrameLayout?>(R.id.forecastContainer) != null && findViewById<FrameLayout?>(
+                        R.id.findCityContainer
+                    ) != null && findViewById<FrameLayout?>(R.id.settingsContainer) != null
+                ) toggleError(0.7f, true)
+                else{
+                    toggleError(0.82f, true)
+                }
             }
         }
 
         networkMonitor.onInternetAvailable = {
             runOnUiThread {
-                toggleError(0.92f, false)
+                if (findViewById<FrameLayout?>(R.id.forecastContainer) != null && findViewById<FrameLayout?>(
+                        R.id.findCityContainer
+                    ) != null && findViewById<FrameLayout?>(R.id.settingsContainer) != null
+                ) toggleError(0.8f, false)
+                else{
+                    toggleError(0.82f, false)
+                }
             }
         }
 
@@ -124,21 +142,35 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener, FindCityFragmen
         return activeNetwork != null && activeNetwork.isConnected
     }
 
-    private fun toggleError(value: Float, errorVisible: Boolean) {
-        if (errorVisible) error.visibility = View.VISIBLE
-        else error.visibility = View.GONE
-        if(fragmentFrame != null){
-            val params = fragmentFrame!!.layoutParams as ConstraintLayout.LayoutParams
-            params.matchConstraintPercentHeight = value
-            fragmentFrame!!.layoutParams = params
+
+    private fun toggleError(percentHeight: Float, errorVisible: Boolean) {
+        error.visibility = if (errorVisible) View.VISIBLE else View.GONE
+
+        fragmentFrame?.let {
+            val params = it.layoutParams as ConstraintLayout.LayoutParams
+            params.matchConstraintPercentHeight = percentHeight
+            it.layoutParams = params
+        } ?: run {
+            val forecastContainer = findViewById<FrameLayout?>(R.id.forecastContainer)
+            val findCityContainer = findViewById<FrameLayout?>(R.id.findCityContainer)
+
+            forecastContainer?.let {
+                val paramsForecast = it.layoutParams as ConstraintLayout.LayoutParams
+                paramsForecast.matchConstraintPercentHeight = percentHeight + 0.2f
+                it.layoutParams = paramsForecast
+            }
+
+            findCityContainer?.let {
+                val paramsFind = it.layoutParams as ConstraintLayout.LayoutParams
+                paramsFind.matchConstraintPercentHeight = percentHeight
+                it.layoutParams = paramsFind
+            }
         }
     }
 
     override fun onActiveCityChanged() {
-        // Spróbuj znaleźć istniejący fragment pogody w menedżerze
         val fragment = supportFragmentManager.fragments.find { it is WeatherFragment }
 
-        // Jeśli fragment został znaleziony i jest widoczny, odśwież go
         if (fragment is WeatherFragment && fragment.isVisible) {
             fragment.refreshForecast()
         }

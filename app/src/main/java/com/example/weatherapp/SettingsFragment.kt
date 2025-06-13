@@ -1,5 +1,6 @@
 package com.example.weatherapp
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,22 @@ class SettingsFragment : Fragment(), IFragment {
     private lateinit var unitSpinner: Spinner
 
     private var loadListener: IFragmentLoadListener? = null
+
+    private var cityChangedListener: IOnActiveCityChangedListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is IOnActiveCityChangedListener) {
+            cityChangedListener = context
+        } else {
+            throw RuntimeException("$context must implement OnActiveCityChangedListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        cityChangedListener = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +78,7 @@ class SettingsFragment : Fragment(), IFragment {
                 lifecycleScope.launch{
                     APIController.refreshActiveCity(requireContext())
                 }
+                cityChangedListener?.onActiveCityChanged()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
