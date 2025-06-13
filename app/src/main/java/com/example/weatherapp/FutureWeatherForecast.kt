@@ -12,7 +12,9 @@ class FutureWeatherForecast {
 
     @SuppressLint("SuspiciousIndentation")
     fun initialize(context: Context, city: City): Boolean {
+
         if (!doesFileExist(city.getFileName(), context)) return false
+
         val hourlyWeatherForecastJSONString = loadActiveCityForecastFromJSON(city.getFileName(), context)
         val hourlyWeatherForecastJSONObject = JSONArray(hourlyWeatherForecastJSONString)
 
