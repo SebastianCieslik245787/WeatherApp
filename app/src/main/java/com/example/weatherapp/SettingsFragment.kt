@@ -76,6 +76,10 @@ class SettingsFragment : Fragment(), IFragment {
                     putString("unit_preference", selectedUnit)
                 }
 
+                lifecycleScope.launch {
+                    APIController.refreshActiveCity(requireContext())
+                }
+
                 cityChangedListener?.onActiveCityChanged()
             }
 
