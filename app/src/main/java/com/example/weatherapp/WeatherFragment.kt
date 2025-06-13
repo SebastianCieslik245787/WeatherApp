@@ -142,7 +142,7 @@ class WeatherFragment : Fragment(), IFragment {
         moreInfoLat.text = actualCity.getLat().toString()
         moreInfoPressure.text = actualWeather.getPressure().toString() + " hPa"
         moreInfoRain.text = actualWeather.getRain().toString() + " mm/m3"
-        moreInfoVisibility.text = actualWeather.getVisibility().toString() + " m"
+        moreInfoVisibility.text = actualWeather.getVisibility() + " m"
         moreInfoHumidity.text = actualWeather.getHumidity().toString() + "%"
         moreInfoWindSpeed.text = actualWeather.getWindSpeed().toString() + windSpeedUnit
         moreInfoWindDirection.text = actualWeather.getWindDirection()

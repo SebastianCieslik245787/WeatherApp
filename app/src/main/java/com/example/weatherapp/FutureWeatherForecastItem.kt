@@ -17,7 +17,7 @@ class FutureWeatherForecastItem(data: JSONObject) {
     private var windSpeed : Double = data.getJSONObject("wind").getDouble("speed")
     private var windDeg : Int = data.getJSONObject("wind").getInt("deg")
     private var rain: Double = data.optJSONObject("rain")?.optDouble("1h") ?: 0.0
-    private var visibility : Int = data.getInt("visibility")
+    private var visibility : String = data.optString("visibility", "unknown")
     private var partOfDay : String = data.getJSONObject("sys").optString("pod", "d")
 
     fun getTime(): String {
@@ -70,7 +70,7 @@ class FutureWeatherForecastItem(data: JSONObject) {
         return this.rain
     }
 
-    fun getVisibility() : Int{
+    fun getVisibility() : String{
         return this.visibility
     }
 }

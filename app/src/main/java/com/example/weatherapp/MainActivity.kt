@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity(), IFragmentLoadListener, IOnActiveCityCh
                     ) != null && findViewById<FrameLayout?>(R.id.settingsContainer) != null
                 ) toggleError(0.8f, false)
                 else{
-                    toggleError(0.82f, false)
+                    toggleError(0.92f, false)
                 }
             }
         }
