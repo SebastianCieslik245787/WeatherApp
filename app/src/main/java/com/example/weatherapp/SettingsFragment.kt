@@ -75,9 +75,7 @@ class SettingsFragment : Fragment(), IFragment {
                 sharedPref.edit {
                     putString("unit_preference", selectedUnit)
                 }
-                lifecycleScope.launch{
-                    APIController.refreshActiveCity(requireContext())
-                }
+
                 cityChangedListener?.onActiveCityChanged()
             }
 

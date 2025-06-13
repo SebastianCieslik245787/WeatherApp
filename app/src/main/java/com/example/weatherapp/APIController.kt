@@ -64,6 +64,8 @@ class APIController {
                 try {
                     val client = OkHttpClient()
 
+
+
                     val currentUrl =
                         "https://api.openweathermap.org/data/2.5/weather?lat=${city.getLat()}&lon=${city.getLon()}&appid=$API_KEY&units=$unit"
                     val currentRequest = Request.Builder().url(currentUrl).build()

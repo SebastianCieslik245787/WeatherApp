@@ -84,7 +84,6 @@ class WeatherFragment : Fragment(), IFragment {
         moreInfoWindDirection = view.findViewById(R.id.windDirectionVal)
         refreshButton = view.findViewById(R.id.refreshIcon)
         refreshButton.setOnClickListener { loadForecast(true) }
-        getUnits()
     }
 
     @SuppressLint("SetTextI18n")
@@ -180,6 +179,7 @@ class WeatherFragment : Fragment(), IFragment {
     }
 
     private fun loadForecast(refresh : Boolean = false){
+        getUnits()
         if(refresh) loadListener?.onFragmentLoading()
 
         val sharedPreferences = context?.getSharedPreferences("actualCity", Context.MODE_PRIVATE)
