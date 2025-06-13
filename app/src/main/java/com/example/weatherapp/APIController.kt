@@ -22,9 +22,9 @@ class APIController {
         suspend fun findCities(name: String, context: Context): MutableList<City>? =
             withContext(Dispatchers.IO) {
                 try {
+                    //Pobieranie danych o Miastach
                     val client = OkHttpClient()
-                    val url =
-                        "https://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=$limit&appid=$API_KEY"
+                    val url = "https://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=$limit&appid=$API_KEY"
                     val request = Request.Builder().url(url).build()
 
                     client.newCall(request).execute().use { response ->
@@ -61,10 +61,9 @@ class APIController {
 
         suspend fun refreshCityForecast(city: City, context: Context, unit: String) =
             withContext(Dispatchers.IO) {
+                //Pobieranie aktualnej i przyszlej pogody
                 try {
                     val client = OkHttpClient()
-
-
 
                     val currentUrl =
                         "https://api.openweathermap.org/data/2.5/weather?lat=${city.getLat()}&lon=${city.getLon()}&appid=$API_KEY&units=$unit"
@@ -115,6 +114,7 @@ class APIController {
 
         suspend fun refreshAllFavouriteCities(context: Context) =
             withContext(Dispatchers.IO) {
+                //Pobieranie pogody dla favourites
                 val sharedPrefFC = context.getSharedPreferences("favourites", Context.MODE_PRIVATE)
                 val jsonString = sharedPrefFC.getString("favourites_list", null) ?: return@withContext
                 val jsonArray = JSONArray(jsonString)
@@ -142,6 +142,19 @@ class APIController {
                         }
                     }
                 }
+
+                /* wypisanie plików z pogodą
+                val dir = context.filesDir
+                val files = dir.listFiles()
+
+                if (files != null) {
+                    for (file in files) {
+                        Log.d("AppFiles", "Plik: ${file.name} (${file.length()} bajtów)")
+                    }
+                } else {
+                    Log.d("AppFiles", "Brak plików w katalogu: ${dir.absolutePath}")
+                }
+                Log.d("AppFiles", "Done")*/
 
                 jobs.awaitAll()
             }

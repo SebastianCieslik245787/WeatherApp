@@ -2,4 +2,5 @@
 <resources>
     <dimen name="bottomBarHeight">0.15</dimen>
     <dimen name="frameContainerHeight">0.85</dimen>
+    <dimen name="refreshIconPadding">15dp</dimen>
 </resources>
