@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"
@@ -16,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/textColorItems"
         />
 
     <GridLayout
@@ -42,11 +44,12 @@
                 android:contentDescription="@string/longitude"
                 android:src="@drawable/longitude"
                 style="@style/moreInfoItemImage"
-                />
+                tools:ignore="MissingConstraints" />
             <TextView
                 android:id="@+id/longitudeVal"
                 app:layout_constraintStart_toEndOf="@id/longitudeIcon"
-                style="@style/moreInfoItemValue"/>
+                style="@style/moreInfoItemValue"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,11 +62,12 @@
                 android:src="@drawable/latitude"
                 android:contentDescription="@string/latitude"
                 style="@style/moreInfoItemImage"
-                />
+                tools:ignore="MissingConstraints" />
             <TextView
                 android:id="@+id/latitudeVal"
                 app:layout_constraintStart_toEndOf="@id/latitudeIcon"
-                style="@style/moreInfoItemValue"/>
+                style="@style/moreInfoItemValue"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,11 +80,12 @@
                 android:contentDescription="@string/pressure"
                 android:src="@drawable/pressure"
                 style="@style/moreInfoItemImage"
-                />
+                tools:ignore="MissingConstraints" />
             <TextView
                 android:id="@+id/pressureVal"
                 app:layout_constraintStart_toEndOf="@id/pressureIcon"
-                style="@style/moreInfoItemValue"/>
+                style="@style/moreInfoItemValue"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,11 +98,12 @@
                 android:src="@drawable/rain_prob"
                 android:contentDescription="@string/rain"
                 style="@style/moreInfoItemImage"
-                />
+                tools:ignore="MissingConstraints" />
             <TextView
                 android:id="@+id/rainVal"
                 app:layout_constraintStart_toEndOf="@id/rainIcon"
-                style="@style/moreInfoItemValue"/>
+                style="@style/moreInfoItemValue"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,11 +116,12 @@
                 android:src="@drawable/visibility"
                 android:contentDescription="@string/visibility"
                 style="@style/moreInfoItemImage"
-                />
+                tools:ignore="MissingConstraints" />
             <TextView
                 android:id="@+id/visibilityVal"
                 app:layout_constraintStart_toEndOf="@id/visibilityIcon"
-                style="@style/moreInfoItemValue"/>
+                style="@style/moreInfoItemValue"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -127,11 +134,12 @@
                 android:contentDescription="@string/humidity"
                 android:src="@drawable/humidity"
                 style="@style/moreInfoItemImage"
-                />
+                tools:ignore="MissingConstraints" />
             <TextView
                 android:id="@+id/humidityVal"
                 style="@style/moreInfoItemValue"
-                app:layout_constraintStart_toEndOf="@id/humidityIcon"/>
+                app:layout_constraintStart_toEndOf="@id/humidityIcon"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -148,7 +156,8 @@
             <TextView
                 android:id="@+id/windVal"
                 app:layout_constraintStart_toEndOf="@id/windIcon"
-                style="@style/moreInfoItemValue"/>
+                style="@style/moreInfoItemValue"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -161,11 +170,12 @@
                 android:contentDescription="@string/wind_direction"
                 android:src="@drawable/wind_direction"
                 style="@style/moreInfoItemImage"
-                />
+                tools:ignore="MissingConstraints" />
             <TextView
                 android:id="@+id/windDirectionVal"
                 app:layout_constraintStart_toEndOf="@id/windDirectionIcon"
-                style="@style/moreInfoItemValue"/>
+                style="@style/moreInfoItemValue"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -181,7 +191,8 @@
         app:layout_constraintWidth_percent="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/moreInfo"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/textColorItems"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

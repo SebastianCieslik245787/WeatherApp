@@ -25,6 +25,7 @@
         android:autoSizeMinTextSize="10sp"
         android:autoSizeMaxTextSize="50sp"
         android:autoSizeStepGranularity="1sp"
+        android:textColor="@color/textColorItems"
         tools:ignore="RtlSymmetry" />
 
     <ImageButton

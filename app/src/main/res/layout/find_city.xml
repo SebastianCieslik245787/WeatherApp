@@ -1,137 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <TextView
-        android:id="@+id/findCityLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.9"
-        android:layout_marginTop="20dp"
-        android:textSize="25sp"
-        android:text="@string/find_city_label"
-        />
-
-    <EditText
-        android:id="@+id/findCity"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/input_city_name_placeholder"
-        android:inputType="text"
-        app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintHeight_percent="0.08"
-        app:layout_constraintTop_toBottomOf="@id/findCityLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/rounded_background"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:paddingEnd="50dp"
-        android:elevation="2dp"
-        android:textSize="20sp"
-        tools:ignore="RtlSymmetry" />
-
-
-    <ImageButton
-        android:id="@+id/findCityButton"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/find_city"
-        app:layout_constraintTop_toTopOf="@id/findCity"
-        app:layout_constraintEnd_toEndOf="@id/findCity"
-        app:layout_constraintWidth_percent="0.1"
-        android:scaleType="centerInside"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/search"
-        android:padding="5dp"
-        android:elevation="3dp"
-        android:background="@color/transparent"
-        />
-
-    <HorizontalScrollView
-        android:id="@+id/findCityScrollView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintHeight_percent="0.11"
-        app:layout_constraintTop_toBottomOf="@id/findCity"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:id="@+id/foundCities"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            />
-    </HorizontalScrollView>
-
-    <TextView
-        android:id="@+id/activeCityLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/findCityScrollView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.9"
-        android:layout_marginTop="20dp"
-        android:textSize="25sp"
-        android:text="@string/actual_city_label"
-        />
+    android:fillViewport="true">
 
     <LinearLayout
-        android:id="@+id/actualCity"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:orientation="horizontal"
-        app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintTop_toBottomOf="@id/activeCityLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
-        />
-
-    <TextView
-        android:id="@+id/favouriteLabel"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/actualCity"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.9"
-        android:layout_marginTop="20dp"
-        android:textSize="25sp"
-        android:text="@string/favourite_label"
-        />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center_horizontal">
 
-
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintHeight_percent="0.45"
-        app:layout_constraintTop_toBottomOf="@id/favouriteLabel"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
-        <LinearLayout
-            android:id="@+id/favourite"
+        <TextView
+            android:id="@+id/findCityLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            />
+            android:layout_marginTop="20dp"
+            android:text="@string/find_city_label"
+            android:textSize="25sp"
+            android:textColor="@color/textColorItems"/>
 
-    </ScrollView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <EditText
+                android:id="@+id/findCity"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_background"
+                android:elevation="2dp"
+                android:hint="@string/input_city_name_placeholder"
+                android:inputType="text"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:paddingEnd="50dp"
+                android:textSize="20sp"
+                tools:ignore="RtlSymmetry"
+                android:textColor="@color/textColorItems"/>
+
+            <ImageButton
+                android:id="@+id/findCityButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:contentDescription="@string/find_city"
+                android:elevation="3dp"
+                android:padding="5dp"
+                android:layout_marginEnd="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/search" />
+        </RelativeLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/findCityScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/foundCities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/activeCityLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/actual_city_label"
+            android:textSize="25sp"
+            android:textColor="@color/textColorItems"/>
+
+        <LinearLayout
+            android:id="@+id/actualCity"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/favouriteLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/favourite_label"
+            android:textSize="25sp"
+            android:textColor="@color/textColorItems"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp">
+
+            <LinearLayout
+                android:id="@+id/favourite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+    </LinearLayout>
+</ScrollView>

@@ -21,6 +21,7 @@
         android:autoSizeMinTextSize="10sp"
         android:autoSizeMaxTextSize="35sp"
         android:autoSizeStepGranularity="1sp"
+        android:textColor="@color/textColorItems"
         tools:ignore="RtlSymmetry" />
     <TextView
         android:id="@+id/foundCityRegion"
@@ -31,10 +32,11 @@
         app:layout_constraintStart_toStartOf="parent"
         android:autoSizeTextType="uniform"
         android:gravity="center|start"
-        android:paddingStart="30dp"
+        android:paddingStart="20dp"
         android:autoSizeMinTextSize="10sp"
         android:autoSizeMaxTextSize="20sp"
         android:autoSizeStepGranularity="1sp"
+        android:textColor="@color/textColorItems"
 
         tools:ignore="RtlSymmetry" />
 

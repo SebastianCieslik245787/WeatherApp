@@ -15,6 +15,7 @@
         android:layout_marginTop="10dp"
         android:textSize="40sp"
         android:text="@string/settingsLabel"
+        android:textColor="@color/textColorItems"
         />
 
     <TextView
@@ -28,6 +29,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:text="@string/select_unit_label"
+        android:textColor="@color/textColorItems"
         />
 
     <Spinner

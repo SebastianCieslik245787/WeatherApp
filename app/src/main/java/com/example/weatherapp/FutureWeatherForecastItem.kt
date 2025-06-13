@@ -18,7 +18,7 @@ class FutureWeatherForecastItem(data: JSONObject) {
     private var windDeg : Int = data.getJSONObject("wind").getInt("deg")
     private var rain: Double = data.optJSONObject("rain")?.optDouble("1h") ?: 0.0
     private var visibility : Int = data.getInt("visibility")
-    private var partOfDay : String = data.getJSONObject("sys").optString("pod", "0")
+    private var partOfDay : String = data.getJSONObject("sys").optString("pod", "d")
 
     fun getTime(): String {
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
